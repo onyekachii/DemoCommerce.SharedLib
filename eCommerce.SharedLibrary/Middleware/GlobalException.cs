@@ -22,20 +22,24 @@ namespace eCommerce.SharedLibrary.Middleware
                     title = "warning";
                     msg = "Too many requests";
                     statusCode = (int)StatusCodes.Status429TooManyRequests;
+                    await ModifyHeader(context, title, msg, statusCode);
                 }
-                if(context.Response.StatusCode == StatusCodes.Status401Unauthorized)
+                if (context.Response.StatusCode == StatusCodes.Status401Unauthorized)
                 {
                     title = "alert";
                     msg = "Unauthorized";
                     statusCode = (int)StatusCodes.Status401Unauthorized;
+                    await ModifyHeader(context, title, msg, statusCode);
                 }
-                if(context.Response.StatusCode == StatusCodes.Status403Forbidden)
+                if (context.Response.StatusCode == StatusCodes.Status403Forbidden)
                 {
                     title = "out of access";
                     msg = "Not allowed";
                     statusCode = (int)StatusCodes.Status403Forbidden;
+                    await ModifyHeader(context, title, msg, statusCode);
                 }
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 LogException.LogExceptions(ex);
                 if(ex is TaskCanceledException || ex is TimeoutException)
@@ -43,12 +47,9 @@ namespace eCommerce.SharedLibrary.Middleware
                     title = "timeout";
                     msg = "Request Timeout";
                     statusCode = StatusCodes.Status408RequestTimeout;
+                    await ModifyHeader(context, title, msg, statusCode);
                 }
-            }
-            finally
-            {
-                await ModifyHeader(context, title, msg, statusCode);
-            }
+            }            
         }
 
         private async Task ModifyHeader(HttpContext context, string title, string msg,  int statusCode)
