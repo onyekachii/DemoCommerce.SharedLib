@@ -12,13 +12,13 @@ namespace eCommerce.SharedLibrary.Middleware
     {
         public async Task InvokeAsync(HttpContext context)
         {
-            var signedHeader = context.Request.Headers["Api-Gateway"];
-            if(signedHeader.FirstOrDefault() is null)
-            {
-                context.Response.StatusCode = StatusCodes.Status503ServiceUnavailable;
-                await context.Response.WriteAsync("Service unavailable");
-                return;
-            }
+            //var signedHeader = context.Request.Headers["Api-Gateway"];
+            //if(signedHeader.FirstOrDefault() is null)
+            //{
+            //    context.Response.StatusCode = StatusCodes.Status503ServiceUnavailable;
+            //    await context.Response.WriteAsync("Service unavailable");
+            //    return;
+            //}
             await next(context);
         }
     }
